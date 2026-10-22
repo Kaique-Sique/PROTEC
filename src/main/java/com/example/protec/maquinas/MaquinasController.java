@@ -49,10 +49,45 @@ public class MaquinasController {
         }
     }
 
-    // ── Delete ─────────────────────────────────────────────────────────────────
+    // ── Create ──────────────────────────────────────────────────────────────────
 
+    @PostMapping
+    public ResponseEntity<MaquinasResponse> create(
+            @RequestParam String nome,
+            @RequestParam String riscos) {
 
+        try {
+            return new ResponseEntity<>(maquinasService.create(nome, riscos), HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
+    // ── Update ──────────────────────────────────────────────────────────────────
+
+    @PatchMapping("/{id}/nome")
+    public ResponseEntity<MaquinasResponse> updateNome(
+            @PathVariable UUID id,
+            @RequestParam String nome) {
+
+        try {
+            return ResponseEntity.ok(maquinasService.updateNome(id, nome));
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PatchMapping("/{id}/riscos")
+    public ResponseEntity<MaquinasResponse> updateRiscos(
+            @PathVariable UUID id,
+            @RequestParam String riscos) {
+
+        try {
+            return ResponseEntity.ok(maquinasService.updateRiscos(id, riscos));
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
     // ── Delete ─────────────────────────────────────────────────────────────────
 

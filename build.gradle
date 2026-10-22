@@ -4,7 +4,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'com.scouter'
+group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -13,25 +13,32 @@ java {
     }
 }
 
+// Gera META-INF/build-info.properties (usado pelo /health para mostrar a versão)
+springBoot {
+    buildInfo()
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc' // JdbcTemplate (health check)
     implementation 'me.paulschwarz:springboot4-dotenv:5.1.0'
-    implementation 'org.springframework.security:spring-security-crypto'
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9'
+    // springdoc 3.x é a linha para Spring Boot 4 (2.8.x é para Boot 3)
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.3'
+
+    runtimeOnly 'org.postgresql:postgresql'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-	runtimeOnly 'org.postgresql:postgresql'
     testRuntimeOnly 'com.h2database:h2'
 }
+
 tasks.named('test') {
     useJUnitPlatform()
 }

@@ -35,6 +35,27 @@ public class MaquinasService {
                 .toList();
     }
 
+    public MaquinasResponse create(String nome, String riscos) {
+        if (nome == null || nome.isBlank()) {
+            throw new IllegalArgumentException("nome cannot be blank");
+        }
+
+        if (riscos == null || riscos.isBlank()) {
+            throw new IllegalArgumentException("riscos cannot be blank");
+        }
+
+        if (maquinasRepository.existsByNome(nome)) {
+            throw new IllegalArgumentException("nome already taken");
+        }
+
+        Maquinas maquina = new Maquinas();
+        maquina.setNome(nome);
+        maquina.setRiscos(riscos);
+        maquinasRepository.save(maquina);
+
+        return toResponse(maquina);
+    }
+
     public MaquinasResponse updateNome(UUID id, String newNome) {
         if (newNome == null || newNome.isBlank()) {
             throw new IllegalArgumentException("nome cannot be blank");
