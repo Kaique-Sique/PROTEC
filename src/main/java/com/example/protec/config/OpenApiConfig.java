@@ -10,11 +10,11 @@ import io.swagger.v3.oas.models.info.Info;
 public class OpenApiConfig {
 
     @Bean
-    public OpenAPI scouterOpenAPI() {
+    public OpenAPI protecOpenAPI() {
         return new OpenAPI()
             .info(new Info()
-                .title("Scouter DataGateway API")
+                .title("PROTEC API")
                 .version("0.0.1")
-                .description("Internal scouting API — FRC Team 7563 Megazord"));
+                .description("API do sistema PROTEC - Gestão de Máquinas e Funcionários"));
     }
 }
