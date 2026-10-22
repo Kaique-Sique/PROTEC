@@ -65,6 +65,18 @@ public class MaquinasController {
 
     // ── Update ──────────────────────────────────────────────────────────────────
 
+    @PatchMapping("/nome/{nome}/nome")
+    public ResponseEntity<MaquinasResponse> updateNome(
+            @PathVariable String nome,
+            @RequestParam String newNome) {
+
+        try {
+            return ResponseEntity.ok(maquinasService.updateNome(nome, newNome));
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PatchMapping("/{id}/nome")
     public ResponseEntity<MaquinasResponse> updateNome(
             @PathVariable UUID id,
@@ -89,6 +101,18 @@ public class MaquinasController {
         }
     }
 
+    @PatchMapping("/nome/{nome}/riscos")
+    public ResponseEntity<MaquinasResponse> updateRiscos(
+            @PathVariable String nome,
+            @RequestParam String riscos) {
+
+        try {
+            return ResponseEntity.ok(maquinasService.updateRiscos(nome, riscos));
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     // ── Delete ─────────────────────────────────────────────────────────────────
 
     @DeleteMapping("/{id}")
@@ -97,6 +121,18 @@ public class MaquinasController {
 
         try {
             maquinasService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/nome/{nome}")
+    public ResponseEntity<Void> delete(
+            @PathVariable String nome) {
+
+        try {
+            maquinasService.delete(nome);
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -74,12 +74,45 @@ public class MaquinasService {
         return toResponse(maquina);
     }
 
+    public MaquinasResponse updateNome(String nome, String newNome) {
+        if (newNome == null || newNome.isBlank()) {
+            throw new IllegalArgumentException("nome cannot be blank");
+        }
+
+        if (maquinasRepository.existsByNome(newNome)) {
+            throw new IllegalArgumentException("nome already taken");
+        }
+
+        Maquinas maquina = maquinasRepository.findByNome(nome)
+                .orElseThrow(() -> new IllegalArgumentException("Maquina not found"));
+
+        maquina.setNome(newNome);
+        maquinasRepository.save(maquina);
+
+        return toResponse(maquina);
+    }
+
+
     public MaquinasResponse updateRiscos(UUID id, String newRiscos) {
         if (newRiscos == null || newRiscos.isBlank()) {
             throw new IllegalArgumentException("riscos cannot be blank");
         }
 
         Maquinas maquina = maquinasRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("maquina not found"));
+
+        maquina.setRiscos(newRiscos);
+        maquinasRepository.save(maquina);
+
+        return toResponse(maquina);
+    }
+
+    public MaquinasResponse updateRiscos(String nome, String newRiscos) {
+        if (newRiscos == null || newRiscos.isBlank()) {
+            throw new IllegalArgumentException("riscos cannot be blank");
+        }
+
+        Maquinas maquina = maquinasRepository.findByNome(nome)
                 .orElseThrow(() -> new IllegalArgumentException("maquina not found"));
 
         maquina.setRiscos(newRiscos);
@@ -95,6 +128,14 @@ public class MaquinasService {
         }
 
         maquinasRepository.deleteById(id);
+    }
+
+    public void delete(String nome) {
+        if (!maquinasRepository.existsByNome(nome)) {
+            throw new IllegalArgumentException("maquina not found");
+        }
+
+        maquinasRepository.deleteByNome(nome);
     }
 
     private MaquinasResponse toResponse(Maquinas maquina) {
